@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  gmod:
+    image: steampipe:cm2network
+  db:
+    image: mysql:8.1
+    container_name: db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./mysql/volume/data:/var/lib/mysql
+      - ./mysql/config/my.cnf:/etc/my.cnf
+    networks:
+      - app-network
+  
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
